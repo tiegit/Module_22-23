@@ -4,12 +4,13 @@ using UnityEngine.UI;
 public class HealthBarView : MonoBehaviour
 {
     [SerializeField] private Image _healthBarFilling;
+
     private Health _health;
     private Camera _camera;
 
     private float _lastHealthPercent;
 
-    public void Initialize(Health health)
+    public void Initialize(Health health = null)
     {
         _health = health;
         _camera = Camera.main;
@@ -21,6 +22,9 @@ public class HealthBarView : MonoBehaviour
 
     private void Update()
     {
+        if (_health == null)
+            return;
+
         if (_health.CurrentHealthPercent != _lastHealthPercent)
         {
             OnHealthChanged();
@@ -28,11 +32,7 @@ public class HealthBarView : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
-    {
-        //transform.LookAt(_camera.transform.position);
-        transform.rotation = _camera.transform.rotation;
-    }
+    private void LateUpdate() => transform.rotation = _camera.transform.rotation;
 
     private void OnHealthChanged() => _healthBarFilling.fillAmount = _health.CurrentHealthPercent;
 }

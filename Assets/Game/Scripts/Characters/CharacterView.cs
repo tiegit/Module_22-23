@@ -1,9 +1,11 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class CharacterView : MonoBehaviour
+public class CharacterView : MonoBehaviour, IDamageAnimator
 {
     private readonly int WalkingVelocity = Animator.StringToHash("Velocity");
+    private readonly int IsExploded = Animator.StringToHash("IsExploded");
+    private readonly int IsDying = Animator.StringToHash("IsDying");
 
     private Animator _animator;
     private Character _character;
@@ -21,6 +23,12 @@ public class CharacterView : MonoBehaviour
         else
             StopRunning();
     }
+
+    public void TakeDamageAnimationRun() => _animator.SetTrigger(IsExploded);
+
+    public void DyingAnimationRun() => _animator.SetBool(IsDying, true);
+
+    public void ResumeMove() => _character.ResumeMove();
 
     private void StopRunning() => _animator.SetFloat(WalkingVelocity, 0);
 

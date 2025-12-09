@@ -14,7 +14,13 @@ public class AgentMover
 
     public Vector3 CurrentVelocity => _agent.desiredVelocity;
 
-    public void SetDestination(Vector3 position) => _agent.SetDestination(position);
+    public void SetDestination(Vector3 position)
+    {
+        if (_agent.isStopped)
+            return;
+
+        _agent.SetDestination(position);
+    }
 
     public void Stop() => _agent.isStopped = true;
 

@@ -47,6 +47,5 @@ public class Pointer : MonoBehaviour
         _pointerView.gameObject.SetActive(false);
 
         _isVisible = false;
-
     }
 }

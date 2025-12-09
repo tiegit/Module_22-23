@@ -8,25 +8,21 @@ public class Mine : MonoBehaviour
     [SerializeField] private float _checkInterval = 0.5f;
     [SerializeField] private float _explosionDelay = 2f;
     [SerializeField] private GameObject _explosionEffect;
-    [SerializeField] private float _blinkSpeed = 5f; // Увеличена скорость мигания
+    [SerializeField] private float _blinkSpeed = 5f;
     [SerializeField] private Renderer _mineRenderer;
 
     private float _timer;
     private float _explosionTimer;
-    private bool _isPlayerInRadius;
-    private bool _isActivated; // Флаг активации мины
+    private bool _isActivated;
     private DamagableManager _damagableManager;
     private Color _originalColor;
-    private bool _isBlinking;
 
     public void Initialize(DamagableManager damagableManager) => _damagableManager = damagableManager;
 
     private void Start()
     {
-        if (_mineRenderer != null)
-        {
-            _originalColor = _mineRenderer.material.color;
-        }
+        if (_mineRenderer != null)        
+            _originalColor = _mineRenderer.material.color;        
     }
 
     private void Update()
@@ -39,24 +35,9 @@ public class Mine : MonoBehaviour
             _timer = 0f;
         }
 
-        // Если мина активирована, продолжаем отсчет независимо от положения игрока
         if (_isActivated)
         {
-            _explosionTimer += Time.deltaTime;
-
-            // Мигание во время активации
-            if (_mineRenderer != null)
-            {
-                float blinkValue = Mathf.PingPong(Time.time * _blinkSpeed, 1f);
-                Color blinkColor = Color.Lerp(_originalColor, Color.white, blinkValue);
-                _mineRenderer.material.color = blinkColor;
-                _isBlinking = true;
-            }
-
-            if (_explosionTimer >= _explosionDelay)
-            {
-                Explode();
-            }
+            HandleActivatedState();
         }
     }
 
@@ -70,19 +51,37 @@ public class Mine : MonoBehaviour
 
             if (distance <= _explosionRadius)
             {
-                // Активируем мину при первом обнаружении игрока
                 if (!_isActivated)
                 {
                     _isActivated = true;
-                    _isPlayerInRadius = true;
                     _explosionTimer = 0f;
                 }
+
                 return;
             }
         }
+    }
 
-        // Игрок вышел из радиуса, но мина продолжает отсчет
-        _isPlayerInRadius = false;
+    private void HandleActivatedState()
+    {
+        _explosionTimer += Time.deltaTime;
+
+        UpdateBlinkEffect();
+
+        if (_explosionTimer >= _explosionDelay)
+        {
+            Explode();
+        }
+    }
+
+    private void UpdateBlinkEffect()
+    {
+        if (_mineRenderer != null)
+        {
+            float blinkValue = Mathf.PingPong(Time.time * _blinkSpeed, 1f);
+            Color blinkColor = Color.Lerp(_originalColor, Color.white, blinkValue);
+            _mineRenderer.material.color = blinkColor;
+        }
     }
 
     private void Explode()
@@ -108,7 +107,7 @@ public class Mine : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _explosionRadius);

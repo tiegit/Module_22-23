@@ -36,7 +36,7 @@ public class ClickToMoveController : Controller, IPointerTargetOwner
         _inputHandler.Update();
     }
 
-    public bool TrySetTargetPoint(Vector3 position)
+    public bool SetTargetPoint(Vector3 position)
     {
         if (NavMesh.CalculatePath(_movable.Position, position, _queryFilter, _pathToTarget))
         {

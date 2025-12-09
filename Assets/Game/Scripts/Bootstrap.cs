@@ -11,7 +11,11 @@ public class Bootstrap : MonoBehaviour
     [SerializeField, Space(15)] Pointer _pointerPrefab;
 
     [SerializeField, Space(15)] private Character _enemyCharacter;
-    [SerializeField] private AgentCharacter _agentEnemyCharacter;
+
+    [SerializeField, Space(15)] private AgentCharacter _agentEnemyCharacter;
+    [SerializeField] private AgentCharacterView _agentEnemyCharacterView;
+    [SerializeField] private Health _agentEnemyCharacterHealth;
+    [SerializeField] private HealthBarView _agentEnemyHealthBarView;
 
     [SerializeField, Space(15)] private MineManager _mineManager;
 
@@ -40,9 +44,6 @@ public class Bootstrap : MonoBehaviour
 
         _characterView.Initialize(_character);
 
-        DamagableManager damagableManager = new DamagableManager();
-
-        _healthBarView.Initialize(_characterHealth);
 
         Pointer pointer = Instantiate(_pointerPrefab);
         pointer.Initialize(playerInput, playerMoveController);
@@ -55,7 +56,16 @@ public class Bootstrap : MonoBehaviour
 
         _agentEnemyCharacterController.Enable();
 
-        _characterHealth.Initialize(damagableManager);
+        _agentEnemyCharacterView.Initialize(_agentEnemyCharacter);
+
+        DamagableManager damagableManager = new DamagableManager();
+
+        _characterHealth.Initialize(_character, damagableManager, _characterView);
+        _healthBarView.Initialize(_characterHealth);
+
+        _agentEnemyCharacterHealth.Initialize(_agentEnemyCharacter, damagableManager, _agentEnemyCharacterView);
+        _agentEnemyHealthBarView?.Initialize(_agentEnemyCharacterHealth);
+
         _mineManager.Initialize(damagableManager);
     }
 

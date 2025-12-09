@@ -26,7 +26,7 @@ public class PlayerMovementInputHandler
         Ray ray = _camera.ScreenPointToRay(_playerInput.MousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
-            return _controller.TrySetTargetPoint(hit.point);
+            return _controller.SetTargetPoint(hit.point);
 
         return false;
     }

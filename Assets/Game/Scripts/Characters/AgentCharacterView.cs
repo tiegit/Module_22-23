@@ -1,11 +1,20 @@
 using UnityEngine;
 
-public class AgentCharacterView : MonoBehaviour
+[RequireComponent(typeof(Animator))]
+public class AgentCharacterView : MonoBehaviour, IDamageAnimator
 {
     private readonly int WalkingVelocity = Animator.StringToHash("Velocity");
+    private readonly int IsExploded = Animator.StringToHash("IsExploded");
+    private readonly int IsDying = Animator.StringToHash("IsDying");
 
-    [SerializeField] private Animator _animator;
-    [SerializeField] private AgentCharacter _character;
+    private Animator _animator;
+    private AgentCharacter _character;
+
+    public void Initialize(AgentCharacter character)
+    {
+        _character = character;
+        _animator = GetComponent<Animator>();
+    }
 
     private void Update()
     {
@@ -14,6 +23,12 @@ public class AgentCharacterView : MonoBehaviour
         else
             StopRunning();
     }
+
+    public void TakeDamageAnimationRun() => _animator.SetTrigger(IsExploded);
+
+    public void DyingAnimationRun() => _animator.SetBool(IsDying, true);
+
+    public void ResumeMove() => _character.ResumeMove();
 
     private void StopRunning() => _animator.SetFloat(WalkingVelocity, 0);
 

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class AgentCharacter : MonoBehaviour
+public class AgentCharacter : MonoBehaviour, IStopable
 {
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _rotationSpeed;
@@ -31,11 +31,11 @@ public class AgentCharacter : MonoBehaviour
 
     private void Update() => _rotator.Update(Time.deltaTime);
 
-    public void SetDestination(Vector3 position) => _mover.SetDestination(position);
-
     public void StopMove() => _mover.Stop();
 
-    public void ResumeMove()=> _mover.Resume();
+    public void ResumeMove() => _mover.Resume();
+
+    public void SetDestination(Vector3 position) => _mover.SetDestination(position);
 
     public void SetRotationDirection(Vector3 inputDirection) => _rotator.SetInputDirection(inputDirection);
 
