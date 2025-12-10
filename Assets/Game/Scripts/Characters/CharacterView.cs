@@ -8,7 +8,7 @@ public class CharacterView : MonoBehaviour, IDamageAnimator
     private readonly int IsExploded = Animator.StringToHash("IsExploded");
     private readonly int IsDying = Animator.StringToHash("IsDying");
 
-    [SerializeField] private string _injuredLayer = "Injured Layer";
+    private readonly string InjuredLayer = "Injured Layer";
 
     private Character _character;
     private Animator _animator;
@@ -32,7 +32,7 @@ public class CharacterView : MonoBehaviour, IDamageAnimator
 
     public void SetInjuredLayer()
     {
-        int layerIndex = _animator.GetLayerIndex(_injuredLayer);
+        int layerIndex = _animator.GetLayerIndex(InjuredLayer);
 
         if (layerIndex != -1)
             _animator.SetLayerWeight(layerIndex, 1);

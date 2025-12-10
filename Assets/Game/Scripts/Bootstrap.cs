@@ -12,12 +12,14 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private GameObject _patrolPointPrefab;
 
     [SerializeField, Space(15)] private Character _enemyCharacter;
+    [SerializeField] private CharacterView _enemyCharacterView;
+    [SerializeField] private Health _enemyCharacterHealth;
 
     [SerializeField, Space(15)] private AgentCharacter _agentEnemyCharacter;
     [SerializeField] private AgentCharacterView _agentEnemyCharacterView;
     [SerializeField] private Health _agentEnemyCharacterHealth;
     [SerializeField] private HealthBarView _agentEnemyHealthBarView;
-    [SerializeField] private float _idleBehaviourSwitchTime = 2f;
+    [SerializeField] private float _idleBehaviourSwitchTime = 4f;
 
     [SerializeField, Space(15)] private MineManager _mineManager;
 
@@ -58,9 +60,10 @@ public class Bootstrap : MonoBehaviour
 
         _characterView.Initialize(_character);
 
-        _enemyCharacterController = new CompositeController(new DirectionalMovableAgroController(_enemyCharacter, _character.transform, 10f, 2f, queryFilter, 1),
+        _enemyCharacterController = new CompositeController(new DirectionalMovableAgroController(_enemyCharacter, _character.transform, 10f, 2f, queryFilter, 1f),
                                                             new AlongMovableVelocityRotatableController(_enemyCharacter, _enemyCharacter));
         _enemyCharacterController.Enable();
+        _enemyCharacterView.Initialize(_enemyCharacter);
 
         _agentEnemyCharacterController = new AgentCharacterAgroController(_agentEnemyCharacter, _character.transform, 20, 2, 1);
 
@@ -75,6 +78,8 @@ public class Bootstrap : MonoBehaviour
 
         _agentEnemyCharacterHealth.Initialize(_agentEnemyCharacter, damagableManager, _agentEnemyCharacterView);
         _agentEnemyHealthBarView?.Initialize(_agentEnemyCharacterHealth);
+
+        _enemyCharacterHealth.Initialize(_enemyCharacter, damagableManager, _enemyCharacterView);
 
         _mineManager.Initialize(damagableManager);
     }

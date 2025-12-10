@@ -7,7 +7,7 @@ public class DirectionalMovableAutoPatrolController : Controller
     private const int StartCornerIndex = 0;
     private const int TargetCornerIndex = 1;
     private const float MoveDistanceTrashold = 0.2f;
-    private const float TimeToReachTarget = 2f;
+    private const float TimeToReachTarget = 3f;
 
     private IDirectionalMovable _movable;
     private NavMeshQueryFilter _queryFilter;

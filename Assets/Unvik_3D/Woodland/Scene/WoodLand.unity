@@ -509,7 +509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adcd2e5bac55c84408b06e2919b0f01c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 40
   _injuredLayerThreshold: 30
 --- !u!1 &105516776
 GameObject:
@@ -1026,7 +1026,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0dada952d0eee34e839c322e7e97473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _injuredLayer: Injured Layer
 --- !u!1 &335463265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1240,7 +1239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9395e05d89f2eb247bf84b33fd836c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _injuredLayer: Injured Layer
 --- !u!4 &368661959 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 82a2914d8f86c62488456950c8330e38,
@@ -1285,11 +1283,13 @@ MonoBehaviour:
   _patrolPointPrefab: {fileID: 4006879258928024891, guid: 359fba4ce22a8f94c97e61f0c039bb58,
     type: 3}
   _enemyCharacter: {fileID: 1625420715}
+  _enemyCharacterView: {fileID: 1761119654}
+  _enemyCharacterHealth: {fileID: 1625420718}
   _agentEnemyCharacter: {fileID: 48644730}
   _agentEnemyCharacterView: {fileID: 273221101}
   _agentEnemyCharacterHealth: {fileID: 48644732}
   _agentEnemyHealthBarView: {fileID: 0}
-  _idleBehaviourSwitchTime: 2
+  _idleBehaviourSwitchTime: 4
   _mineManager: {fileID: 139971886}
 --- !u!4 &373757461
 Transform:
@@ -4680,6 +4680,7 @@ GameObject:
   - component: {fileID: 1625420716}
   - component: {fileID: 1625420717}
   - component: {fileID: 1625420715}
+  - component: {fileID: 1625420718}
   m_Layer: 0
   m_Name: EnemyCharacter
   m_TagString: Untagged
@@ -4700,7 +4701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxMoveSpeed: 6
-  _injuredMoveSpeed: 0
+  _injuredMoveSpeed: 3
   _rotationSpeed: 500
   _groundChecker: {fileID: 430584979}
   _gravityForce: 9.8
@@ -4746,6 +4747,20 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.4, z: 0}
+--- !u!114 &1625420718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625420714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adcd2e5bac55c84408b06e2919b0f01c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 70
+  _injuredLayerThreshold: 30
 --- !u!114 &1630607210 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1477614937204453133, guid: b84a205c1119ffb499c0a2389c39c129,
@@ -5141,7 +5156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9395e05d89f2eb247bf84b33fd836c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _injuredLayer: Injured Layer
 --- !u!95 &1761119655
 Animator:
   serializedVersion: 5
