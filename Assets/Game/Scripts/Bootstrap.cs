@@ -9,6 +9,7 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private HealthBarView _healthBarView;
 
     [SerializeField, Space(15)] Pointer _pointerPrefab;
+    [SerializeField] private GameObject _patrolPointPrefab;
 
     [SerializeField, Space(15)] private Character _enemyCharacter;
 
@@ -16,6 +17,7 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private AgentCharacterView _agentEnemyCharacterView;
     [SerializeField] private Health _agentEnemyCharacterHealth;
     [SerializeField] private HealthBarView _agentEnemyHealthBarView;
+    [SerializeField] private float _idleBehaviourSwitchTime = 2f;
 
     [SerializeField, Space(15)] private MineManager _mineManager;
 
@@ -24,6 +26,7 @@ public class Bootstrap : MonoBehaviour
     private Controller _agentEnemyCharacterController;
 
     private NavMeshPath _path;
+    private MovementControllerHandler _movementHandler;
 
     private void Awake()
     {
@@ -40,10 +43,18 @@ public class Bootstrap : MonoBehaviour
         Pointer pointer = Instantiate(_pointerPrefab);
         pointer.Initialize(playerInput, playerMoveController);
 
+        var patrolPointPrefabInstance = Instantiate(_patrolPointPrefab);
+
+        DirectionalMovableAutoPatrolController playerAutoPatrolController = 
+            new DirectionalMovableAutoPatrolController(_character, queryFilter, 15f, 0.5f, 0.2f, patrolPointPrefabInstance);
+
         _characterController = new CompositeController(playerMoveController,
                                                        /*new PlayerDirectionalMovableController(playerInput, _character),*/
+                                                       playerAutoPatrolController,
                                                        new AlongMovableVelocityRotatableController(_character, _character));
         _characterController.Enable();
+
+        _movementHandler = new MovementControllerHandler(playerInput, playerMoveController, playerAutoPatrolController, _idleBehaviourSwitchTime);
 
         _characterView.Initialize(_character);
 
@@ -75,6 +86,8 @@ public class Bootstrap : MonoBehaviour
         _characterController.Update(Time.deltaTime);
         _enemyCharacterController.Update(Time.deltaTime);
         _agentEnemyCharacterController.Update(Time.deltaTime);
+
+        _movementHandler.Update(Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.F))
             _characterHealth.TakeDamage(10);
