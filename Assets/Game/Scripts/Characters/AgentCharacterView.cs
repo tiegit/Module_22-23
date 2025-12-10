@@ -7,12 +7,15 @@ public class AgentCharacterView : MonoBehaviour, IDamageAnimator
     private readonly int IsExploded = Animator.StringToHash("IsExploded");
     private readonly int IsDying = Animator.StringToHash("IsDying");
 
+    [SerializeField] private string _injuredLayer = "Injured Layer";
+
     private Animator _animator;
     private AgentCharacter _character;
 
     public void Initialize(AgentCharacter character)
     {
         _character = character;
+
         _animator = GetComponent<Animator>();
     }
 
@@ -24,11 +27,19 @@ public class AgentCharacterView : MonoBehaviour, IDamageAnimator
             StopRunning();
     }
 
-    public void TakeDamageAnimationRun() => _animator.SetTrigger(IsExploded);
+    public void TakeDamage() => _animator.SetTrigger(IsExploded);
 
-    public void DyingAnimationRun() => _animator.SetBool(IsDying, true);
+    public void SetInjuredLayer()
+    {
+        int layerIndex = _animator.GetLayerIndex(_injuredLayer);
+
+        if (layerIndex != -1)
+            _animator.SetLayerWeight(layerIndex, 1);
+    }
 
     public void ResumeMove() => _character.ResumeMove();
+
+    public void DyingAnimation() => _animator.SetBool(IsDying, true);
 
     private void StopRunning() => _animator.SetFloat(WalkingVelocity, 0);
 

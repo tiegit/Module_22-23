@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class Character : MonoBehaviour, IDirectionalMovable, IDirectionalRotatable, IStopable
+public class Character : MonoBehaviour, IDirectionalMovable, IDirectionalRotatable, ICharacter
 {
     [SerializeField] private float _maxMoveSpeed;
+    [SerializeField] private float _injuredMoveSpeed;
     [SerializeField] private float _rotationSpeed;
 
     private DirectionalMover _mover;
@@ -12,9 +13,11 @@ public class Character : MonoBehaviour, IDirectionalMovable, IDirectionalRotatab
     [SerializeField] private float _gravityForce;
 
     private float _currentSpeed;
+    private bool _isDead;
 
-    public float MaxSpeed { get; private set; }
-    public float CurrentSpeed => _currentSpeed;
+    public float MaxSpeed => _maxMoveSpeed;
+    public float InjuredMoveSpeed => _injuredMoveSpeed;
+
     public Vector3 CurrentHorizontalVelocity => _mover.CurrentHorizontalVelocity;
     public Quaternion CurrentRotation => _rotator.CurrentRotation;
     public Vector3 Position => transform.position;
@@ -23,12 +26,13 @@ public class Character : MonoBehaviour, IDirectionalMovable, IDirectionalRotatab
     {
         _mover = new DirectionalMover(GetComponent<CharacterController>(), _groundChecker, _gravityForce, _maxMoveSpeed);
         _rotator = new DirectionalRotator(transform, _rotationSpeed);
-
-        MaxSpeed = _maxMoveSpeed;
     }
 
     private void Update()
     {
+        if (_isDead)
+            return;
+
         _mover.Update(Time.deltaTime, transform.position.y);
         _rotator.Update(Time.deltaTime);
     }
@@ -38,6 +42,8 @@ public class Character : MonoBehaviour, IDirectionalMovable, IDirectionalRotatab
         _currentSpeed = speed;
         _mover.SetMoveSpeed(speed);
     }
+
+    public void SetDeathState(bool isDead) => _isDead = isDead;
 
     public void StopMove() => _mover.Stop();
 

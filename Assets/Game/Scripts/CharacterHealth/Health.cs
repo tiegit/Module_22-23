@@ -3,8 +3,9 @@ using UnityEngine;
 public class Health : MonoBehaviour, IDamagable
 {
     [SerializeField] private float _maxHealth = 100f;
+    [SerializeField, Range(0f, 100f)] private float _injuredLayerThreshold = 30f;
 
-    private IStopable _stopable;
+    private ICharacter _charecter;
     private DamagableManager _damagableManager;
     private IDamageAnimator _damageAnimator;
 
@@ -12,9 +13,9 @@ public class Health : MonoBehaviour, IDamagable
     public Vector3 Position => transform.position;
     public float CurrentHealthPercent => _currentHealth / _maxHealth;
 
-    public void Initialize(IStopable stopable, DamagableManager manager, IDamageAnimator damageAnimator)
+    public void Initialize(ICharacter character, DamagableManager manager, IDamageAnimator damageAnimator)
     {
-        _stopable = stopable;
+        _charecter = character;
         _damagableManager = manager;
         _damagableManager.RegisterDamagable(this);
 
@@ -24,12 +25,18 @@ public class Health : MonoBehaviour, IDamagable
     }
 
     public void TakeDamage(float value)
-    {
-        _damageAnimator.TakeDamageAnimationRun();
-        
+    {        
         ChangeHealth(-value);
 
-        _stopable.StopMove();
+        _damageAnimator.TakeDamage();
+
+        if (CurrentHealthPercent <= _injuredLayerThreshold / 100)
+        {
+            _damageAnimator.SetInjuredLayer();
+            _charecter.SetMoveSpeed(_charecter.InjuredMoveSpeed);
+        }
+
+        _charecter.StopMove();
     }
 
     private void ChangeHealth(float value)
@@ -40,9 +47,10 @@ public class Health : MonoBehaviour, IDamagable
         {
             _maxHealth = 0;
 
-            _stopable.StopMove();
+            _charecter.StopMove();
+            _charecter.SetDeathState(true);
 
-            _damageAnimator.DyingAnimationRun();
+            _damageAnimator.DyingAnimation();
         }
 
         if (_currentHealth >= _maxHealth)

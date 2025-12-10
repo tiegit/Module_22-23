@@ -14,6 +14,8 @@ public class AgentMover
 
     public Vector3 CurrentVelocity => _agent.desiredVelocity;
 
+    public void SetMoveSpeed(float speed) => _agent.speed = speed;
+
     public void SetDestination(Vector3 position)
     {
         if (_agent.isStopped)
@@ -25,4 +27,5 @@ public class AgentMover
     public void Stop() => _agent.isStopped = true;
 
     public void Resume() => _agent.isStopped = false;
+
 }

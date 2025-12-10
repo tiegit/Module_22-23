@@ -37,16 +37,15 @@ public class Bootstrap : MonoBehaviour
 
         ClickToMoveController playerMoveController = new(playerInput, _character, queryFilter);
 
+        Pointer pointer = Instantiate(_pointerPrefab);
+        pointer.Initialize(playerInput, playerMoveController);
+
         _characterController = new CompositeController(playerMoveController,
                                                        /*new PlayerDirectionalMovableController(playerInput, _character),*/
                                                        new AlongMovableVelocityRotatableController(_character, _character));
         _characterController.Enable();
 
         _characterView.Initialize(_character);
-
-
-        Pointer pointer = Instantiate(_pointerPrefab);
-        pointer.Initialize(playerInput, playerMoveController);
 
         _enemyCharacterController = new CompositeController(new DirectionalMovableAgroController(_enemyCharacter, _character.transform, 10f, 2f, queryFilter, 1),
                                                             new AlongMovableVelocityRotatableController(_enemyCharacter, _enemyCharacter));

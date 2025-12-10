@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class AgentCharacter : MonoBehaviour, IStopable
+public class AgentCharacter : MonoBehaviour, ICharacter
 {
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _maxMoveSpeed;
+    [SerializeField] private float _injuredMoveSpeed;
     [SerializeField] private float _rotationSpeed;
 
     [SerializeField] private Transform _target;
@@ -14,26 +15,48 @@ public class AgentCharacter : MonoBehaviour, IStopable
     private AgentMover _mover;
     private DirectionalRotator _rotator;
 
+    private bool _isDead;
+    private float _currentSpeed;
+
+    public float MaxSpeed => _maxMoveSpeed;
+    public float InjuredMoveSpeed => _injuredMoveSpeed;
+
     public Vector3 CurrentVelocity => _mover.CurrentVelocity;
     public Quaternion CurrentRotation => _rotator.CurrentRotation;
-    public float MaxSpeed { get; private set; }
 
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _agent.updateRotation = false;
 
-        _mover = new AgentMover(_agent, _moveSpeed);
+        _mover = new AgentMover(_agent, _maxMoveSpeed);
         _rotator = new DirectionalRotator(transform, _rotationSpeed);
-
-        MaxSpeed = _moveSpeed;
     }
 
     private void Update() => _rotator.Update(Time.deltaTime);
 
+    public void SetMoveSpeed(float speed)
+    {
+        _currentSpeed = speed;
+        _mover.SetMoveSpeed(speed);
+    }
+
+    public void SetDeathState(bool isDead)
+    {
+        StopMove();
+
+        _isDead = isDead;
+    }
+
     public void StopMove() => _mover.Stop();
 
-    public void ResumeMove() => _mover.Resume();
+    public void ResumeMove()
+    {
+        if (_isDead)
+            return;
+
+        _mover.Resume();
+    }
 
     public void SetDestination(Vector3 position) => _mover.SetDestination(position);
 

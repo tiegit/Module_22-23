@@ -1,6 +1,7 @@
 ﻿public interface IDamageAnimator
 {
-    void DyingAnimationRun();
+    void TakeDamage();
+    void SetInjuredLayer();
+    void DyingAnimation();
     void ResumeMove();
-    void TakeDamageAnimationRun();
 }

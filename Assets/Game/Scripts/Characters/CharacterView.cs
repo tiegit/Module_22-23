@@ -3,16 +3,20 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class CharacterView : MonoBehaviour, IDamageAnimator
 {
+
     private readonly int WalkingVelocity = Animator.StringToHash("Velocity");
     private readonly int IsExploded = Animator.StringToHash("IsExploded");
     private readonly int IsDying = Animator.StringToHash("IsDying");
 
-    private Animator _animator;
+    [SerializeField] private string _injuredLayer = "Injured Layer";
+
     private Character _character;
+    private Animator _animator;
 
     public void Initialize(Character character)
     {
         _character = character;
+
         _animator = GetComponent<Animator>();
     }
 
@@ -24,11 +28,19 @@ public class CharacterView : MonoBehaviour, IDamageAnimator
             StopRunning();
     }
 
-    public void TakeDamageAnimationRun() => _animator.SetTrigger(IsExploded);
+    public void TakeDamage() => _animator.SetTrigger(IsExploded);
 
-    public void DyingAnimationRun() => _animator.SetBool(IsDying, true);
+    public void SetInjuredLayer()
+    {
+        int layerIndex = _animator.GetLayerIndex(_injuredLayer);
+
+        if (layerIndex != -1)
+            _animator.SetLayerWeight(layerIndex, 1);
+    }
 
     public void ResumeMove() => _character.ResumeMove();
+
+    public void DyingAnimation() => _animator.SetBool(IsDying, true);
 
     private void StopRunning() => _animator.SetFloat(WalkingVelocity, 0);
 

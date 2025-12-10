@@ -385,7 +385,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 671ce00a9444b554cabc48f4b4d3eeab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 6
+  _maxMoveSpeed: 6
+  _injuredMoveSpeed: 3
   _rotationSpeed: 900
   _target: {fileID: 1799700070}
 --- !u!195 &48644731
@@ -423,6 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 10
+  _injuredLayerThreshold: 30
 --- !u!1 &105516776
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,6 +932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0dada952d0eee34e839c322e7e97473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _injuredLayer: Injured Layer
 --- !u!1 &335463265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,6 +1146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9395e05d89f2eb247bf84b33fd836c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _injuredLayer: Injured Layer
 --- !u!4 &368661959 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 82a2914d8f86c62488456950c8330e38,
@@ -4341,6 +4345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxMoveSpeed: 6
+  _injuredMoveSpeed: 0
   _rotationSpeed: 500
   _groundChecker: {fileID: 430584979}
   _gravityForce: 9.8
@@ -4781,6 +4786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9395e05d89f2eb247bf84b33fd836c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _injuredLayer: Injured Layer
 --- !u!95 &1761119655
 Animator:
   serializedVersion: 5
@@ -5197,6 +5203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxMoveSpeed: 8
+  _injuredMoveSpeed: 5
   _rotationSpeed: 500
   _groundChecker: {fileID: 1905199000}
   _gravityForce: 9.8
@@ -5213,6 +5220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 100
+  _injuredLayerThreshold: 30
 --- !u!1001 &1829911396
 PrefabInstance:
   m_ObjectHideFlags: 0

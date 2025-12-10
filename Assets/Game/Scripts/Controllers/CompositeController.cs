@@ -2,10 +2,7 @@ public class CompositeController : Controller
 {
     private Controller[] _controllers;
 
-    public CompositeController(params Controller[] controllers)
-    {
-        _controllers = controllers;
-    }
+    public CompositeController(params Controller[] controllers) => _controllers = controllers;
 
     public override void Enable()
     {
